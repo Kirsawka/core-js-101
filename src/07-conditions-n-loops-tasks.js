@@ -27,8 +27,11 @@
  *  21 => 'Fizz'
  *
  */
-function getFizzBuzz(/* num */) {
-  throw new Error('Not implemented');
+function getFizzBuzz(num) {
+  if (num % 3 === 0 && num % 5 === 0) return 'FizzBuzz';
+  if (num % 5 === 0) return 'Buzz';
+  if (num % 3 === 0) return 'Fizz';
+  return num;
 }
 
 
@@ -43,8 +46,9 @@ function getFizzBuzz(/* num */) {
  *   5  => 120
  *   10 => 3628800
  */
-function getFactorial(/* n */) {
-  throw new Error('Not implemented');
+function getFactorial(n) {
+  if (n === 1) return 1;
+  return n * getFactorial(n - 1);
 }
 
 
@@ -60,8 +64,12 @@ function getFactorial(/* n */) {
  *   5,10  =>  45 ( = 5+6+7+8+9+10 )
  *   -1,1  =>  0  ( = -1 + 0 + 1 )
  */
-function getSumBetweenNumbers(/* n1, n2 */) {
-  throw new Error('Not implemented');
+function getSumBetweenNumbers(n1, n2) {
+  let sum = 0;
+  for (let i = n1; i <= n2; i += 1) {
+    sum += i;
+  }
+  return sum;
 }
 
 
@@ -80,8 +88,9 @@ function getSumBetweenNumbers(/* n1, n2 */) {
  *   10,1,1   =>  false
  *   10,10,10 =>  true
  */
-function isTriangle(/* a, b, c */) {
-  throw new Error('Not implemented');
+function isTriangle(a, b, c) {
+  if ((a + b > c) && (b + c > a) && (c + a > b)) return true;
+  return false;
 }
 
 
@@ -148,8 +157,14 @@ function doRectanglesOverlap(/* rect1, rect2 */) {
  *   { center: { x:0, y:0 }, radius:10 },  { x:10, y:10 }   => false
  *
  */
-function isInsideCircle(/* circle, point */) {
-  throw new Error('Not implemented');
+function isInsideCircle(circle, point) {
+  const xPow = (point.x - circle.center.x) ** 2;
+  const yPow = (point.y - circle.center.y) ** 2;
+  const radiusPow = circle.radius ** 2;
+  if (xPow + yPow < radiusPow) {
+    return true;
+  }
+  return false;
 }
 
 
@@ -164,8 +179,13 @@ function isInsideCircle(/* circle, point */) {
  *   'abracadabra'  => 'c'
  *   'entente' => null
  */
-function findFirstSingleChar(/* str */) {
-  throw new Error('Not implemented');
+function findFirstSingleChar(str) {
+  for (let i = 0; i < str.length; i += 1) {
+    if (str.indexOf(str[i]) === i && str.indexOf(str[i], i + 1) === -1) {
+      return str[i];
+    }
+  }
+  return null;
 }
 
 
@@ -208,8 +228,8 @@ function getIntervalString(/* a, b, isStartIncluded, isEndIncluded */) {
  * 'rotator' => 'rotator'
  * 'noon' => 'noon'
  */
-function reverseString(/* str */) {
-  throw new Error('Not implemented');
+function reverseString(str) {
+  return Array.from(str).reverse().join('');
 }
 
 
@@ -225,8 +245,8 @@ function reverseString(/* str */) {
  *   87354 => 45378
  *   34143 => 34143
  */
-function reverseInteger(/* num */) {
-  throw new Error('Not implemented');
+function reverseInteger(num) {
+  return +Array.from(num.toString()).reverse().join('');
 }
 
 
@@ -268,8 +288,13 @@ function isCreditCardNumber(/* ccn */) {
  *   10000 ( 1+0+0+0+0 = 1 ) => 1
  *   165536 (1+6+5+5+3+6 = 26,  2+6 = 8) => 8
  */
-function getDigitalRoot(/* num */) {
-  throw new Error('Not implemented');
+function getDigitalRoot(num) {
+  const arr = Array.from(num.toString()).map((item) => +item);
+  const sum = arr.reduce((a, b) => a + b, 0);
+  if (sum.toString().length === 1) {
+    return sum;
+  }
+  return getDigitalRoot(sum);
 }
 
 
@@ -294,8 +319,38 @@ function getDigitalRoot(/* num */) {
  *   '{)' = false
  *   '{[(<{[]}>)]}' = true
  */
-function isBracketsBalanced(/* str */) {
-  throw new Error('Not implemented');
+function isBracketsBalanced(str) {
+  const open = ['(', '{', '[', '<'];
+  const arr = [];
+
+  for (let i = 0; i < str.length; i += 1) {
+    if (open.includes(str[i])) {
+      arr.push(str[i]);
+    } else {
+      if (arr.length === 0) return false;
+      let lastElem;
+      switch (str[i]) {
+        case ')':
+          lastElem = arr.pop();
+          if (lastElem === '{' || lastElem === '[' || lastElem === '<') return false;
+          break;
+        case '}':
+          lastElem = arr.pop();
+          if (lastElem === '(' || lastElem === '[' || lastElem === '<') return false;
+          break;
+        case ']':
+          lastElem = arr.pop();
+          if (lastElem === '(' || lastElem === '{' || lastElem === '<') return false;
+          break;
+        case '>':
+          lastElem = arr.pop();
+          if (lastElem === '(' || lastElem === '{' || lastElem === '[') return false;
+          break;
+        default: return false;
+      }
+    }
+  }
+  return arr.length === 0;
 }
 
 
